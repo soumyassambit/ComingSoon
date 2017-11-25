@@ -1,0 +1,52 @@
+CC = g++
+
+CFLAGS = -Wall -c -fPIC
+
+INCLUDES = -I${HOME}/ComingSoon/api/include
+
+LFLAGs = -L${HOME}/ComingSoon/lib
+
+LIB_DIR = ${HOME}/ComingSoon/lib
+
+LIBS = -lapi
+API_SRCDIR = ${HOME}/ComingSoon/api/source
+API_SOURCE = $(wildcard ${HOME}/ComingSoon/api/source/*.cpp)
+#API_SOURCE    = $(shell find $(API_SRCDIR) -name '*.cpp')
+API_OBJ_SOURCE = $(wildcard ${HOME}/ComingSoon/api/obj/*.o)
+
+OBJS_DIR_API = ${HOME}/ComingSoon/api/obj/
+#OBJS = $(API_SOURCE:.cpp=.o)
+#OBJS = $(patsubst $(API_SRCDIR)%.cpp,$(OBJS_DIR_API)/%.o,$(API_SOURCE))
+#${path##*/}
+OBJS = $(patsubst $(API_SRCDIR)/%.cpp,$(OBJS_DIR_API)%.o,$(API_SOURCE))
+
+#g++ -c -fPIC -I/home/soumya/ComingSoon/api/include add.cpp -o add.o
+#g++ add.o -shared -o libapi.so
+
+#api: $(patsubst $(API_SRCDIR)/%.cpp,$(OBJS_DIR_API)%.o,$(API_SOURCE))
+#%.o : %.cpp makefile
+#	$(CC) $(CFLAGS) $(INCLUDES) $< -o  $@
+	#$(API_SOURCE):$(OBJS)
+	#	echo $@
+	 #	$(CC) $(CFLAGS) $(INCLUDES) $(API_SOURCE) -o  $(OBJS)
+	#	$(CC) $(API_OBJ_SOURCE) -shared -o $(LIB_DIR)/libapi.so
+#api:    
+#	$(API_SOURCE):  $(OBJS)
+#	    $(CC) $(CFLAGS) -o $@ $(RUNTIME_PATH) $(OBJECTS) $(LIB_PATH) $(LIBS)
+#	$(OBJECTS): $(SOURCES)
+#
+
+#	    $(CC) $(CFLAGS) -c $(SOURCES) $(LIB_PATH) $(LIBS)
+#api: $(OBJS)
+#	g++ -o $@ $^
+#	$(OBJS)/%.o: $(API_SRCDIR)/%.cpp
+#	g++ -c -o $@ $<
+api: $(OBJS)
+
+$(OBJS): $(API_SOURCE) Makefile
+	$(CC) $(CFLAGS) $(INCLUDES) $< -o  $@
+	
+clean_api:
+	rm -rf ${HOME}/ComingSoon/lib/*.so
+	rm -rf ${HOME}/ComingSoon/api/obj/*.o
+	
